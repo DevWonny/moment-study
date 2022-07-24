@@ -31,6 +31,10 @@ const Main = () => {
   const [dateArray, setDateArray] = useState([]);
   // 전체 날짜
   const [totalDateArray, setTotalDateArray] = useState([]);
+  // 오늘 날짜
+  const [today, setToday] = useState("");
+
+  let num = 0;
 
   useEffect(() => {
     if (todayYear && todayMonth) {
@@ -103,7 +107,10 @@ const Main = () => {
     ]);
   }, [prevLastDayArray, dateArray, nextFirstDayArray]);
 
-  console.log(totalDateArray);
+  // 오늘 날짜
+  useEffect(() => {
+    setToday(moment().format("YYYYMMDD"));
+  }, []);
 
   return (
     <>
@@ -127,15 +134,39 @@ const Main = () => {
           })}
         </CalendarWeekWrap>
 
-        {/* <CalendarWeekWrap>
-          {totalDateArray.map((date, index) => {
+        {totalDateArray.map((date, index) => {
+          if ((index + 1) % 7 === 0) {
             return (
-              <CalendarWeekItem key={`main-calendar-week-item-date-${index}`}>
-                {date}
-              </CalendarWeekItem>
+              <CalendarWeekWrap key={`main-calendar-week-warp-${index}`}>
+                {totalDateArray.slice(num, index).map((date2, index2) => {
+                  num = index + 1;
+                  return (
+                    <CalendarWeekItem
+                      color={(index2 + 1) % 7 === 1 && "SUN"}
+                      today={
+                        today.slice(0, 4) === todayYear &&
+                        today.slice(4, 6) === todayMonth &&
+                        parseInt(today.slice(6)) === date2
+                      }
+                    >
+                      {date2}
+                    </CalendarWeekItem>
+                  );
+                })}
+                <CalendarWeekItem
+                  color={"SAT"}
+                  today={
+                    today.slice(0, 4) === todayYear &&
+                    today.slice(4, 6) === todayMonth &&
+                    parseInt(today.slice(6)) === date
+                  }
+                >
+                  {date}
+                </CalendarWeekItem>
+              </CalendarWeekWrap>
             );
-          })}
-        </CalendarWeekWrap> */}
+          }
+        })}
       </CalendarWarp>
     </>
   );
@@ -180,4 +211,6 @@ const CalendarWeekItem = styled.div`
 
   font-weight: ${(props) =>
     props.color === "SUN" || props.color === "SAT" ? "900" : "500"};
+
+  background-color: ${(props) => props.today && "#CBFF75"};
 `;
