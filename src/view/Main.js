@@ -146,6 +146,7 @@ const Main = () => {
                       today={
                         today.slice(0, 4) === todayYear &&
                         today.slice(4, 6) === todayMonth &&
+                        moment().day() === moment(date2).day() &&
                         parseInt(today.slice(6)) === date2
                       }
                     >
@@ -158,6 +159,7 @@ const Main = () => {
                   today={
                     today.slice(0, 4) === todayYear &&
                     today.slice(4, 6) === todayMonth &&
+                    moment().day() === moment(today).day() &&
                     parseInt(today.slice(6)) === date
                   }
                 >
@@ -212,5 +214,5 @@ const CalendarWeekItem = styled.div`
   font-weight: ${(props) =>
     props.color === "SUN" || props.color === "SAT" ? "900" : "500"};
 
-  background-color: ${(props) => props.today && "#CBFF75"};
+  background-color: ${(props) => props.today && "#FAFAB4"};
 `;
