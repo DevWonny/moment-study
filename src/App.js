@@ -1,13 +1,19 @@
 import Main from "./view/Main";
-import Header from "./components/Header";
 import Footer from "./components/Footer";
+import Memo from "./view/Memo";
 
 import styled from "styled-components";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 function App() {
   return (
     <Wrap>
-      <Main />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Main />} />
+          <Route path="/momo/*" element={<Memo />} />
+        </Routes>
+      </BrowserRouter>
       <Footer />
     </Wrap>
   );

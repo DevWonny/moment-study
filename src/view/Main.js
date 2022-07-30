@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 // styled
 import styled from "styled-components";
@@ -33,6 +34,8 @@ const Main = () => {
   const [totalDateArray, setTotalDateArray] = useState([]);
   // 오늘 날짜
   const [today, setToday] = useState("");
+  // 현재 달이 아닌경우 현재달로 돌아가는 버튼 보여주기
+  const [currentMonthViewButton, setCurrentMnthViewButton] = useState(false);
 
   let num = 0;
 
@@ -62,11 +65,10 @@ const Main = () => {
     if (prevLastDayArray.length > 0) {
       setPrevLastDayArray([]);
     }
-
     for (let i = prevLastDay - firstDay + 1; i <= prevLastDay; i++) {
       setPrevLastDayArray((prev) => [...prev, i]);
     }
-  }, [prevLastDay]);
+  }, [prevLastDay, , firstDay]);
 
   // 현재 보여지는 달의 마지막날 요일
   useEffect(() => {
@@ -112,6 +114,24 @@ const Main = () => {
     setToday(moment().format("YYYYMMDD"));
   }, []);
 
+  // 현재 달로 돌아가기 버튼 보이기
+  useEffect(() => {
+    if (
+      todayYear !== moment().format("YYYY") ||
+      todayMonth !== moment().format("MM")
+    ) {
+      setCurrentMnthViewButton(true);
+    } else {
+      setCurrentMnthViewButton(false);
+    }
+  }, [todayMonth, todayYear]);
+
+  // 현재 달로 돌아가기
+  const onMoveCurrentMonth = () => {
+    setTodayYear(moment().format("YYYY"));
+    setTodayMonth(moment().format("MM"));
+  };
+
   return (
     <>
       <Header
@@ -120,6 +140,13 @@ const Main = () => {
         todayMonth={todayMonth}
         setTodayMonth={setTodayMonth}
       />
+
+      {currentMonthViewButton && (
+        <CurrentMonthButton onClick={onMoveCurrentMonth}>
+          현재 달로 돌아가기
+        </CurrentMonthButton>
+      )}
+
       <CalendarWarp>
         <CalendarWeekWrap>
           {dayList.map((day, index) => {
@@ -150,10 +177,11 @@ const Main = () => {
                         parseInt(today.slice(6)) === date2
                       }
                     >
-                      {date2}
+                      <Link to={`/memo/${date2}`}>{date2}</Link>
                     </CalendarWeekItem>
                   );
                 })}
+
                 <CalendarWeekItem
                   color={"SAT"}
                   today={
@@ -163,7 +191,7 @@ const Main = () => {
                     parseInt(today.slice(6)) === date
                   }
                 >
-                  {date}
+                  <Link to={`/memo/${date}`}>{date}</Link>
                 </CalendarWeekItem>
               </CalendarWeekWrap>
             );
@@ -215,4 +243,24 @@ const CalendarWeekItem = styled.div`
     props.color === "SUN" || props.color === "SAT" ? "900" : "500"};
 
   background-color: ${(props) => props.today && "#FAFAB4"};
+`;
+
+const CurrentMonthButton = styled.div`
+  width: 120px;
+  height: 30px;
+  border: 1px solid #efefef;
+  border-radius: 10px;
+  font-size: 15px;
+  text-align: center;
+  line-height: 30px;
+  cursor: pointer;
+  font-size: 12px;
+  position: absolute;
+  top: 130px;
+  right: 10%;
+
+  &:hover {
+    background-color: #efefef;
+    color: #000;
+  }
 `;
