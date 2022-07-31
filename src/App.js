@@ -11,7 +11,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Main />} />
-          <Route path="/momo/*" element={<Memo />} />
+          <Route path="/memo/:id" element={<Memo />} />
         </Routes>
       </BrowserRouter>
       <Footer />

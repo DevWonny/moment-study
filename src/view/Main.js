@@ -173,11 +173,16 @@ const Main = () => {
                       today={
                         today.slice(0, 4) === todayYear &&
                         today.slice(4, 6) === todayMonth &&
-                        moment().day() === moment(date2).day() &&
+                        moment().day() === moment(today).day() &&
                         parseInt(today.slice(6)) === date2
                       }
                     >
-                      <Link to={`/memo/${date2}`}>{date2}</Link>
+                      <Link
+                        to={`/memo/${date2}`}
+                        style={{ color: "inherit", textDecoration: "none" }}
+                      >
+                        {date2}
+                      </Link>
                     </CalendarWeekItem>
                   );
                 })}
@@ -191,7 +196,12 @@ const Main = () => {
                     parseInt(today.slice(6)) === date
                   }
                 >
-                  <Link to={`/memo/${date}`}>{date}</Link>
+                  <Link
+                    to={`/memo/${date}`}
+                    style={{ color: "inherit", textDecoration: "none" }}
+                  >
+                    {date}
+                  </Link>
                 </CalendarWeekItem>
               </CalendarWeekWrap>
             );
